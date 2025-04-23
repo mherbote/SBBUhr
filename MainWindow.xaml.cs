@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using Microsoft.Web.WebView2.Core.DevToolsProtocolExtension;
 using System.Text;
 using System.Linq;
 using System.Text.Json;
+using WpfScreenHelper;
+using WpfScreenHelper.Enum;
+using System.Runtime.InteropServices;
 
 namespace SBBUhr
 {
@@ -16,6 +18,18 @@ namespace SBBUhr
     /// </summary>
     public partial class MainWindow : Window
     {
+        string[] Monitors = new string[3];
+        int iMonitor = 0;
+
+        public struct Coord
+        {
+            public int x;
+            public int y;
+
+            public int width;
+            public int height;
+        }
+
         bool _isNavigating = false;
         public static RoutedCommand CallCDPMethodCommand = new RoutedCommand();
         DevToolsProtocolHelper _cdpHelper;
@@ -41,6 +55,22 @@ namespace SBBUhr
             InitializeComponent();
         }
 
+        private void Window_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var screen in Screen.AllScreens)
+            {
+                Monitors[iMonitor] = screen.DeviceName;
+                iMonitor++;
+            }
+
+            Coord Coordinaten;
+            Coordinaten.x = 0;
+            Coordinaten.y = 0;
+            Coordinaten.width = 200;
+            Coordinaten.height = 200;
+            //WindowHelper.SetWindowPosition(MainWindow, Coordinaten, Monitors[1]);
+        }
+
         void GoToPageCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = webView != null && !_isNavigating;
@@ -51,7 +81,6 @@ namespace SBBUhr
             await webView.EnsureCoreWebView2Async();
             webView.CoreWebView2.Navigate((string)e.Parameter);
         }
-
 
         #region CDP_COMMANDS
         async void ShowFPSCounter(object sender, RoutedEventArgs e)

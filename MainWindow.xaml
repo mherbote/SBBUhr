@@ -6,7 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SBBUhr"
         mc:Ignorable="d"
-        Title="SBB Uhr" Height="360" Width="340">
+        Title="SBB Uhr" Height="340" Width="320"
+        WindowStyle="SingleBorderWindow" ResizeMode="NoResize"
+        Loaded="Window_OnLoaded">
 
     <Window.CommandBindings>
         <CommandBinding Command="NavigationCommands.GoToPage" Executed="GoToPageCmdExecuted" CanExecute="GoToPageCmdCanExecute"/>
@@ -16,7 +18,7 @@
         <DockPanel DockPanel.Dock="Top"/>
         <wv2:WebView2
             x:Name="webView"
-            Source="file://c:\1\SBBuhr\SBBuhr.html" Width="340" Height="360"
+            Source="file://D:\Programme\SBBuhr\SBBuhr.html" Width="340" Height="360"
         />
     </DockPanel>
 </Window>
